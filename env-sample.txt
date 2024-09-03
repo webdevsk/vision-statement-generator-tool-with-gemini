@@ -1,0 +1,1 @@
+GEMINI_API_KEY={Insert Gemini api key here. Obtain one from https://aistudio.google.com/}
