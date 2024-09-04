@@ -10,8 +10,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${GeistSans.variable} dark ${GeistMono.variable}`}>
-      <body className="bg-neutral-400 dark:bg-neutral-950">{children}</body>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="bg-neutral-400 dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 selection:bg-neutral-950 selection:text-neutral-100 dark:selection:bg-neutral-100 dark:selection:text-neutral-950">{children}</body>
     </html>
   )
 }

@@ -28,7 +28,7 @@ const fontStyles = {
   ".variant-h3": {
     "font-size": "32px",
     "font-weight": "600",
-    "line-height": "2",
+    "line-height": "1.5",
   },
   ".variant-h4": {
     "font-size": "26px",

@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { getGeminiResponse } from "@/actions/get-gemini-response"
+import { EmblaCarousel } from "./carousel"
 
 export function ClientApp() {
     const [open, setOpen] = useState(false)
@@ -17,7 +18,7 @@ export function ClientApp() {
     return (
         <div
             className={cn(
-                "rounded-xl flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 max-w-7xl mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden h-dvh lg:h-[80dvh] lg:mt-[10dvh]"
+                "rounded-2xl flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 max-w-7xl mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden h-dvh lg:h-[80dvh] lg:mt-[10dvh]"
             )}>
             <Sidebar open={open} setOpen={setOpen}>
                 <SidebarBody className="justify-between gap-10">
@@ -37,8 +38,9 @@ export function ClientApp() {
             {/* Main portion */}
             <div className="flex flex-1">
                 <div
-                    className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+                    className="dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
                     {/* Main content here */}
+                    <EmblaCarousel />
                 </div>
             </div>
         </div>

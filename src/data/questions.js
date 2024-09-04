@@ -9,5 +9,5 @@ export const questions = [
     "What is your company's vision for the future of the industry it operates in?",
     "What are the key challenges and opportunities facing your company?",
     "What is your company's culture like and what values does it promote?",
-    "How do you want your company to be perceived by employees, customers, and the public?"
+    // "How do you want your company to be perceived by employees, customers, and the public?"
 ]
