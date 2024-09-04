@@ -6,6 +6,9 @@ const fontStyles = {
     "font-size": "60px",
     "font-weight": "700",
     "line-height": "2",
+    '@media (max-width: 500px)': {
+      "font-size": "54px",
+    },
     // for responsive
     // '@media (max-width: 500px)': {
     //   "font-size": "40px",
@@ -19,26 +22,46 @@ const fontStyles = {
     "font-size": "46px",
     "font-weight": "600",
     "line-height": "2",
+    '@media (max-width: 500px)': {
+      "font-size": "36px",
+      "line-height": "1.5",
+    },
   },
   ".variant-h2": {
     "font-size": "38px",
     "font-weight": "600",
     "line-height": "2",
+    '@media (max-width: 500px)': {
+      "font-size": "30px",
+      "line-height": "1.5",
+    },
   },
   ".variant-h3": {
     "font-size": "32px",
     "font-weight": "600",
     "line-height": "1.5",
+    '@media (max-width: 500px)': {
+      "font-size": "24px",
+      "line-height": "1.2",
+    },
   },
   ".variant-h4": {
     "font-size": "26px",
     "font-weight": "500",
     "line-height": "1.5",
+    '@media (max-width: 500px)': {
+      "font-size": "20px",
+      "line-height": "1.2",
+    },
   },
   ".variant-h5": {
     "font-size": "20px",
     "font-weight": "500",
     "line-height": "1.5",
+    '@media (max-width: 500px)': {
+      "font-size": "18px",
+      "line-height": "1.2",
+    },
   },
   ".variant-h6": {
     "font-size": "16px",

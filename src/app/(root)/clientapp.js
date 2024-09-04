@@ -18,7 +18,7 @@ export function ClientApp() {
     return (
         <div
             className={cn(
-                "rounded-2xl flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 max-w-7xl mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden h-dvh lg:h-[80dvh] lg:mt-[10dvh]"
+                "md:rounded-2xl flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 max-w-7xl mx-auto border border-neutral-200 dark:border-neutral-700 h-dvh overflow-hidden lg:h-[80dvh] lg:mt-[10dvh] [--sidebar-color:theme(colors.neutral.200)] dark:[--sidebar-color:theme(colors.neutral.800)]"
             )}>
             <Sidebar open={open} setOpen={setOpen}>
                 <SidebarBody className="justify-between gap-10">
@@ -36,9 +36,9 @@ export function ClientApp() {
                 </SidebarBody>
             </Sidebar>
             {/* Main portion */}
-            <div className="flex flex-1">
+            <div className="flex max-md:h-1 grow">
                 <div
-                    className="dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+                    className="dark:border-neutral-800 bg-[--sidebar-color] flex flex-col gap-2 flex-1 w-full h-full">
                     {/* Main content here */}
                     <EmblaCarousel />
                 </div>
