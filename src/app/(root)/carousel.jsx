@@ -1,11 +1,18 @@
+import { Slider } from "@/components/ui/slider"
 import { questions } from "@/data/questions"
 import { useEmblaPrevNextButtons } from "@/hooks/use-embla-prev-next-button"
+import { IconAdjustmentsHorizontal, IconSparkles } from "@tabler/icons-react"
 import useEmblaCarousel from "embla-carousel-react"
 import { useEffect, useState } from "react"
 
-export function EmblaCarousel({ slides, options = { axis: "y" } }) {
+export function EmblaCarousel({
+  slides,
+  options = { axis: "y", watchDrag: false }
+}) {
   // Creating a tuple with questions and answers
   const [promptData, setPromptData] = useState(questions.map(q => [q, ""]))
+  const [config, setConfig] = useState({})
+
   // init embla
   const [emblaRef, emblaApi] = useEmblaCarousel(options)
   const {
@@ -28,7 +35,7 @@ export function EmblaCarousel({ slides, options = { axis: "y" } }) {
     function logSlidesInView(emblaApi) {
       const inView = emblaApi.slidesInView()
       inView.length === 1 &&
-        emblaApi.slideNodes()[inView[0]]?.querySelector("input")?.focus()
+        emblaApi.slideNodes()[inView[0]]?.querySelector("textarea")?.focus()
     }
     emblaApi.on("slidesInView", logSlidesInView)
     return () => {
@@ -45,10 +52,11 @@ export function EmblaCarousel({ slides, options = { axis: "y" } }) {
 
   return (
     <div
-      className="embla overflow-hidden h-full md:rounded-2xl"
+      className="embla overflow-hidden h-full py-2 md:rounded-2xl"
       ref={emblaRef}
     >
-      <div className="embla__container max-md:px-2 py-2 pe-2 gap-y-4 *:bg-neutral-50 dark:*:bg-neutral-900 grid auto-cols-fr h-full auto-rows-[100%] *:p-4 *:md:p-10">
+      <div className="embla__container max-md:px-2 pe-4 gap-y-4 *:bg-neutral-50 dark:*:bg-neutral-900 grid auto-cols-fr h-full auto-rows-[100%] *:p-4 *:md:p-10">
+        {/* Start page */}
         <div className="embla__slide border border-current rounded-2xl md:rounded-xl gap-4 grid auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content] text-center">
           <h1 className="variant-h1 mt-12">Purpose Foundry</h1>
           <h4 className="variant-h4 font-semibold">
@@ -69,6 +77,7 @@ export function EmblaCarousel({ slides, options = { axis: "y" } }) {
             </button>
           </div>
         </div>
+        {/* Questions */}
         {questions?.map((question, i) => (
           <label
             key={i}
@@ -79,14 +88,14 @@ export function EmblaCarousel({ slides, options = { axis: "y" } }) {
             </h2>
             <h3 className="variant-h3">{question}</h3>
             <div>
-              <input
-                type="text"
+              <textarea
                 placeholder="Answer"
-                data-question-index={i}
                 onKeyDown={handleKeyDown}
+                rows={2}
+                maxLength={200}
                 value={promptData[i][1]}
                 onChange={e => setAnswer(i, e.currentTarget.value)}
-                className="appearance-none font-semibold bg-inherit caret-current focus-visible:outline-none variant-h4 py-4"
+                className="appearance-none min-w-0 w-full font-semibold bg-inherit resize-none caret-current focus-visible:outline-none variant-h4 my-4"
               />
             </div>
             <div className="flex gap-4 items-center">
@@ -109,7 +118,82 @@ export function EmblaCarousel({ slides, options = { axis: "y" } }) {
             </div>
           </label>
         ))}
+
+        {/* Config Page */}
+        <div className="embla__slide border border-current rounded-2xl md:rounded-xl gap-4 grid auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content]">
+          <h2 className="leading-none variant-h2 rounded-full mt-4 md:mt-8 min-w-12 min-h-12 md:min-w-16 md:min-h-16 grid place-items-center justify-self-start border-4 border-current">
+            <IconAdjustmentsHorizontal size={56} />
+          </h2>
+          <h3 className="variant-h3">Config</h3>
+          <div className="my-4 flex flex-col gap-x-3 gap-y-6 *:grid md:*:grid-cols-2 *:auto-rows-max *:gap-2">
+            <div>
+              <h5 className="variant-h5">Character Limit:</h5>
+              <Slider
+                min={50}
+                max={200}
+                value={[config["Character Limit"] ?? 50]}
+                onChange={value =>
+                  setConfig(prevState => ({
+                    ...prevState,
+                    "Character Limit": value[0]
+                  }))
+                }
+              />
+            </div>
+            <div>
+              <h5 className="variant-h5">Line Limit:</h5>
+              <Slider
+                min={1}
+                max={50}
+                value={[config["Line Limit"] ?? 50]}
+                onChange={value =>
+                  setConfig(prevState => ({
+                    ...prevState,
+                    "Line Limit": value[0]
+                  }))
+                }
+              />
+            </div>
+            <div>
+              <h5 className="variant-h5">Additional Instructions:</h5>
+              <textarea
+                rows={3}
+                maxLength={200}
+                value={config["Additional Instructions"]}
+                onChange={e =>
+                  setConfig(prevState => ({
+                    ...prevState,
+                    "Additional Instructions": e.target.value
+                  }))
+                }
+                className="border-2 resize-none focus-visible:outline-none p-2 variant-p bg-inherit border-current"
+              ></textarea>
+            </div>
+          </div>
+          <div className="flex gap-4 items-center">
+            <button
+              onClick={onPrevButtonClick}
+              disabled={prevBtnDisabled}
+              title="Previous"
+              className="prev min-w-32 disabled:opacity-60 disabled:pointer-events-none hover:bg-neutral-700 hover:dark:bg-neutral-300 transition-colors  px-3 py-2 bg-neutral-900 text-white dark:bg-neutral-50 dark:text-neutral-950 font-semibold variant-h6"
+            >
+              Previous
+            </button>
+            <button
+              onClick={onNextButtonClick}
+              title="Generate"
+              className="ms-auto min-w-32 disabled:opacity-60 disabled:pointer-events-none hover:bg-neutral-700 hover:dark:bg-neutral-300 transition-colors  next px-3 py-2 bg-neutral-900 text-white dark:bg-neutral-50 dark:text-neutral-950 font-semibold variant-h6"
+            >
+              <div className="flex gap-2 items-center">
+                <IconSparkles />
+                <span>Generate</span>
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
+
+// IconAdjustmentsHorizontal

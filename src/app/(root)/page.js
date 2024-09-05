@@ -1,7 +1,7 @@
 import { ClientApp } from "./clientapp"
 
 export default function HomePage() {
-  return <main>
+  return <main className="container">
     <ClientApp />
   </main>
 }
