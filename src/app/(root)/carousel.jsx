@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { questions } from "@/data/questions"
 import { useEmblaPrevNextButtons } from "@/hooks/use-embla-prev-next-button"
@@ -5,10 +6,7 @@ import { IconAdjustmentsHorizontal, IconSparkles } from "@tabler/icons-react"
 import useEmblaCarousel from "embla-carousel-react"
 import { useEffect, useState } from "react"
 
-export function EmblaCarousel({
-  slides,
-  options = { axis: "y", watchDrag: false }
-}) {
+export function EmblaCarousel({ options = { axis: "y", watchDrag: false } }) {
   // Creating a tuple with questions and answers
   const [promptData, setPromptData] = useState(questions.map(q => [q, ""]))
   const [config, setConfig] = useState({})
@@ -68,15 +66,16 @@ export function EmblaCarousel({
             Vision Statement.
           </h5>
           <div className="flex gap-4 items-center">
-            <button
+            <Button
               onClick={onNextButtonClick}
               disabled={nextBtnDisabled}
-              className="mx-auto min-w-32 disabled:opacity-60 disabled:pointer-events-none hover:bg-neutral-700 hover:dark:bg-neutral-300 transition-colors  next px-3 py-2 bg-neutral-900 text-white dark:bg-neutral-50 dark:text-neutral-950 font-semibold variant-h6"
+              className="mx-auto"
             >
               Get Started
-            </button>
+            </Button>
           </div>
         </div>
+
         {/* Questions */}
         {questions?.map((question, i) => (
           <label
@@ -98,23 +97,21 @@ export function EmblaCarousel({
                 className="appearance-none min-w-0 w-full font-semibold bg-inherit resize-none caret-current focus-visible:outline-none variant-h4 my-4"
               />
             </div>
-            <div className="flex gap-4 items-center">
-              <button
+            <div className="flex gap-4 justify-between items-center">
+              <Button
                 onClick={onPrevButtonClick}
                 disabled={prevBtnDisabled}
                 title="Previous"
-                className="prev min-w-32 disabled:opacity-60 disabled:pointer-events-none hover:bg-neutral-700 hover:dark:bg-neutral-300 transition-colors  px-3 py-2 bg-neutral-900 text-white dark:bg-neutral-50 dark:text-neutral-950 font-semibold variant-h6"
               >
                 Previous
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={onNextButtonClick}
                 disabled={nextBtnDisabled}
                 title={promptData[i][1] ? "Next" : "Skip"}
-                className="ms-auto min-w-32 disabled:opacity-60 disabled:pointer-events-none hover:bg-neutral-700 hover:dark:bg-neutral-300 transition-colors  next px-3 py-2 bg-neutral-900 text-white dark:bg-neutral-50 dark:text-neutral-950 font-semibold variant-h6"
               >
                 {promptData[i][1] ? "Next" : "Skip"}
-              </button>
+              </Button>
             </div>
           </label>
         ))}
@@ -170,25 +167,23 @@ export function EmblaCarousel({
               ></textarea>
             </div>
           </div>
-          <div className="flex gap-4 items-center">
-            <button
+          <div className="flex gap-4 justify-between items-center">
+            <Button
               onClick={onPrevButtonClick}
               disabled={prevBtnDisabled}
               title="Previous"
-              className="prev min-w-32 disabled:opacity-60 disabled:pointer-events-none hover:bg-neutral-700 hover:dark:bg-neutral-300 transition-colors  px-3 py-2 bg-neutral-900 text-white dark:bg-neutral-50 dark:text-neutral-950 font-semibold variant-h6"
             >
               Previous
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={onNextButtonClick}
               title="Generate"
-              className="ms-auto min-w-32 disabled:opacity-60 disabled:pointer-events-none hover:bg-neutral-700 hover:dark:bg-neutral-300 transition-colors  next px-3 py-2 bg-neutral-900 text-white dark:bg-neutral-50 dark:text-neutral-950 font-semibold variant-h6"
             >
               <div className="flex gap-2 items-center">
                 <IconSparkles />
                 <span>Generate</span>
               </div>
-            </button>
+            </Button>
           </div>
         </div>
       </div>
