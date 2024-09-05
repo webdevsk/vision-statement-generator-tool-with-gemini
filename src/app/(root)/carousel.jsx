@@ -70,7 +70,7 @@ export function EmblaCarousel({ embla }) {
   function handleKeyDown(e) {
     if (e.key !== "Enter" && e.key !== "Tab") return
     e.preventDefault()
-    onNextButtonClick()
+    onNextButtonClick(true)
   }
 
   useEffect(() => {

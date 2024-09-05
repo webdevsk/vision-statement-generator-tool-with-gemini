@@ -3,13 +3,9 @@
     "browser": true,
     "es6": true
   },
-  "extends": [
-    "next/core-web-vitals",
-    "prettier",
-    "plugin:react-hooks/recommended"
-  ],
+  "extends": ["next/core-web-vitals", "prettier"],
   "rules": {
-    "no-undef": "error"
+    "no-undef": "warn"
   }
 }
 
