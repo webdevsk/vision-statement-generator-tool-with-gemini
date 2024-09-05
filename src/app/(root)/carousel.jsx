@@ -5,24 +5,41 @@ import { questions } from "@/data/questions"
 import { useEmblaPrevNextButtons } from "@/hooks/use-embla-prev-next-button"
 import { cn } from "@/lib/utils"
 import { IconAdjustmentsHorizontal, IconSparkles } from "@tabler/icons-react"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { getGeminiResponse } from "@/actions/get-gemini-response"
 import { generatedPrompt } from "@/lib/generated-prompts"
 import { toast } from "sonner"
+import useLocalStorage from "@/hooks/use-local-storage"
 
 export function EmblaCarousel({ embla }) {
-  const [emblaRef, emblaApi] = embla
   // Creating a tuple with questions and answers
-  const [promptData, setPromptData] = useState(questions.map(q => [q, ""]))
-  const [config, setConfig] = useState({
-    "Character Limit": 1000,
-    "Line Limit": 50
-  })
+  const initialPromptData = useMemo(
+    () => questions.map(q => [q, ""]),
+    [questions]
+  )
+  const initialConfig = { "Character Limit": 1000, "Line Limit": 50 }
 
-  const [response, setResponse] = useState("")
+  const [emblaRef, emblaApi] = embla
+  const [promptData, setPromptData] = useLocalStorage(
+    "promptData",
+    initialPromptData
+  )
+  const [config, setConfig] = useLocalStorage("config", initialConfig)
+  const [response, setResponse] = useLocalStorage("response", "")
   const [loading, setLoading] = useState(false)
-  console.log(loading)
-  console.log(response)
+  const {
+    prevBtnDisabled,
+    nextBtnDisabled,
+    onPrevButtonClick,
+    onNextButtonClick
+  } = useEmblaPrevNextButtons(emblaApi)
+
+  function newSession() {
+    setPromptData(initialPromptData)
+    setConfig(initialConfig)
+    setResponse("")
+    onNextButtonClick()
+  }
 
   const getResponse = useCallback(async () => {
     try {
@@ -43,19 +60,11 @@ export function EmblaCarousel({ embla }) {
     }
   })
 
-  // init embla
-  const {
-    prevBtnDisabled,
-    nextBtnDisabled,
-    onPrevButtonClick,
-    onNextButtonClick
-  } = useEmblaPrevNextButtons(emblaApi)
-
-  // setter function to set answers
-  function setAnswer(index, value) {
-    setPromptData(prevState =>
-      prevState.map((t, i) => (i !== index ? t : [t[0], value]))
-    )
+  //handle Enter and Tab key press to move over to the next slide
+  function handleKeyDown(e) {
+    if (e.key !== "Enter" && e.key !== "Tab") return
+    e.preventDefault()
+    onNextButtonClick()
   }
 
   useEffect(() => {
@@ -74,13 +83,6 @@ export function EmblaCarousel({ embla }) {
       emblaApi.off("slidesInView", logSlidesInView)
     }
   }, [emblaApi])
-
-  //handle Enter and Tab key press to move over to the next slide
-  function handleKeyDown(e) {
-    if (e.key !== "Enter" && e.key !== "Tab") return
-    e.preventDefault()
-    onNextButtonClick()
-  }
 
   return (
     <div
@@ -105,6 +107,13 @@ export function EmblaCarousel({ embla }) {
               disabled={nextBtnDisabled}
               className="mx-auto"
             >
+              Load Previous Session
+            </Button>
+            <Button
+              onClick={newSession}
+              disabled={nextBtnDisabled}
+              className="mx-auto"
+            >
               Get Started
             </Button>
           </div>
@@ -124,7 +133,13 @@ export function EmblaCarousel({ embla }) {
                 rows={2}
                 maxLength={200}
                 value={promptData[i][1]}
-                onChange={e => setAnswer(i, e.currentTarget.value)}
+                onChange={e =>
+                  setPromptData(prevState =>
+                    prevState.map((t, index) =>
+                      index !== i ? t : [t[0], e.target.value]
+                    )
+                  )
+                }
                 className="appearance-none min-w-0 w-full font-semibold bg-inherit resize-none caret-current focus-visible:outline-none variant-h4 my-4"
               />
             </div>
