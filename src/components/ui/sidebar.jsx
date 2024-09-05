@@ -152,7 +152,7 @@ export const SidebarButton = ({ icon, label, className, ...props }) => {
   return (
     <button
       className={cn(
-        "flex items-center justify-start gap-2  group/sidebar py-1",
+        "flex items-center justify-start gap-2 variant-p group/sidebar py-1",
         className
       )}
       {...props}
@@ -163,7 +163,7 @@ export const SidebarButton = ({ icon, label, className, ...props }) => {
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1
         }}
-        className="variant-p font-normal group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        className=" group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
       >
         {label}
       </motion.span>

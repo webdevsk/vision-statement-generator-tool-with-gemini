@@ -17,7 +17,7 @@ export function EmblaCarousel({ embla }) {
     () => questions.map(q => [q, ""]),
     [questions]
   )
-  const initialConfig = { "Character Limit": 1000, "Line Limit": 50 }
+  const initialConfig = { "Character Limit": 1000, "Line Limit": 100 }
 
   const [emblaRef, emblaApi] = embla
   const [promptData, setPromptData] = useLocalStorage(
@@ -121,7 +121,10 @@ export function EmblaCarousel({ embla }) {
 
         {/* Questions */}
         {questions?.map((question, i) => (
-          <EmblaSlide key={i}>
+          <EmblaSlide
+            TagName="label"
+            key={i}
+          >
             <h2 className="leading-none variant-h2 rounded-full mt-4 lg:mt-8 min-w-12 min-h-12 lg:min-w-16 lg:min-h-16 grid place-items-center justify-self-start border-4 border-current">
               {i + 1}
             </h2>
@@ -188,7 +191,7 @@ export function EmblaCarousel({ embla }) {
               <h5 className="variant-h5">Line Limit:</h5>
               <Slider
                 min={1}
-                max={50}
+                max={100}
                 value={[config["Line Limit"]]}
                 onChange={value =>
                   setConfig(prevState => ({
@@ -271,9 +274,9 @@ export function EmblaCarousel({ embla }) {
   )
 }
 
-function EmblaSlide({ className, children, ...rest }) {
+function EmblaSlide({ TagName = "div", className, children, ...rest }) {
   return (
-    <div
+    <TagName
       className={cn(
         "embla__slide border border-current rounded-2xl lg:rounded-xl gap-4 grid auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content]",
         className
@@ -281,6 +284,6 @@ function EmblaSlide({ className, children, ...rest }) {
       {...rest}
     >
       {children}
-    </div>
+    </TagName>
   )
 }

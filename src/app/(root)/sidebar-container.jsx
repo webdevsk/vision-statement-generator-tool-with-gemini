@@ -2,10 +2,16 @@
 import { Sidebar, SidebarBody, SidebarButton } from "@/components/ui/sidebar"
 import { questions } from "@/data/questions"
 import { useEmblaPagination } from "@/hooks/use-embla-pagination"
+import useLocalStorage from "@/hooks/use-local-storage"
 import { cn } from "@/lib/utils"
-import { IconAdjustmentsHorizontal, IconSparkles } from "@tabler/icons-react"
+import {
+  IconAdjustmentsHorizontal,
+  IconMoon,
+  IconSparkles,
+  IconSun
+} from "@tabler/icons-react"
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export function SidebarContainer({ embla }) {
   const [open, setOpen] = useState(false)
@@ -14,6 +20,16 @@ export function SidebarContainer({ embla }) {
   const { selectedIndex, scrollSnaps, onButtonClick } =
     useEmblaPagination(emblaApi)
 
+  // 0 = Light, 1 = Dark
+  const [themePref, setThemePref] = useLocalStorage("themePref", 0)
+
+  function cycleThemePref() {
+    setThemePref(prevTheme => !prevTheme)
+  }
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", themePref)
+  }, [themePref])
   return (
     <>
       <Sidebar
@@ -74,7 +90,14 @@ export function SidebarContainer({ embla }) {
               />
             </div>
           </div>
-          <div>{/* Theme toggler */}</div>
+          <div className="px-4">
+            <SidebarButton
+              className="font-semibold"
+              onClick={cycleThemePref}
+              label="Toggle Theme"
+              icon={themePref ? <IconMoon size={24} /> : <IconSun size={24} />}
+            ></SidebarButton>
+          </div>
         </SidebarBody>
       </Sidebar>
     </>
