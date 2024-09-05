@@ -26,11 +26,11 @@ export function Slider({
         step={step}
         disabled={disabled}
       >
-        <RadixSlider.Track className="bg-neutral-950 relative grow rounded-full h-1">
+        <RadixSlider.Track className="bg-neutral-950 dark:bg-neutral-50  relative grow rounded-full h-1">
           {/* <RadixSlider.Range className="absolute bg-neutral-50 rounded-full h-full" /> */}
         </RadixSlider.Track>
         <RadixSlider.Thumb
-          className="block w-3 h-3 bg-neutral-50 shadow-current rounded-[10px] hover:bg-neutral-200 focus:outline-none shadow-[0_0_0_4px] focus:bg-current"
+          className="block w-3 h-3 bg-neutral-50 dark:bg-neutral-950 shadow-current rounded-[10px] hover:bg-neutral-200 focus:outline-none shadow-[0_0_0_4px] focus:bg-current"
           aria-label="Volume"
         />
       </RadixSlider.Root>
