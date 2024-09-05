@@ -2,15 +2,16 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai"
 
-export async function getGeminiResponse(promptData) {
+export async function getGeminiResponse(prompt) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
     const model = genAI.getGenerativeModel({
         model: "gemini-1.5-flash",
-        generationConfig: { maxOutputTokens: 200 },
+        systemInstruction: "Your job is to generate vision statement for businesses. If no information is given, you can generate a random one.",
+        generationConfig: { maxOutputTokens: 200, temperature: 2.0, },
     })
 
     try {
-        const result = await model.generateContent(promptData.prompt)
+        const result = await model.generateContent(prompt)
         const response = await result.response
         const text = response.text()
         return {

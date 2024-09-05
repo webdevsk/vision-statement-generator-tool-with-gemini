@@ -1,7 +1,6 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { getGeminiResponse } from "@/actions/get-gemini-response"
 import { EmblaCarousel } from "./carousel"
 import { SidebarContainer } from "./sidebar-container"
 import { MainContainer } from "./main-container"
@@ -9,11 +8,6 @@ import useEmblaCarousel from "embla-carousel-react"
 
 export default function ClientApp() {
     const embla = useEmblaCarousel({ axis: "y", watchDrag: false })
-
-    async function getResponse() {
-        const res = await getGeminiResponse({ prompt: prompt })
-        setResponse(res.data)
-    }
 
     return (
         <div

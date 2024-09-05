@@ -1,15 +1,31 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { questions } from "@/data/questions"
 import { useEmblaPrevNextButtons } from "@/hooks/use-embla-prev-next-button"
+import { cn } from "@/lib/utils"
 import { IconAdjustmentsHorizontal, IconSparkles } from "@tabler/icons-react"
 import { useEffect, useState } from "react"
+import { getGeminiResponse } from "@/actions/get-gemini-response"
+import useSWRImmutable from "swr"
+import { generatedPrompt } from "@/lib/generated-prompts"
 
 export function EmblaCarousel({ embla }) {
   const [emblaRef, emblaApi] = embla
   // Creating a tuple with questions and answers
   const [promptData, setPromptData] = useState(questions.map(q => [q, ""]))
   const [config, setConfig] = useState({})
+
+  const [responseData, setResponseData] = useState({ data: {} })
+  console.log(generatedPrompt(promptData, config))
+  async function getResponse() {
+    const res = await getGeminiResponse(generatedPrompt(promptData, config))
+    console.log(res)
+  }
+  // const { data, error, isLoading } = useSWRImmutable(
+  //   generatedPrompt(promptData, config),
+  //   prompt => getGeminiResponse
+  // )
 
   // init embla
   const {
@@ -54,7 +70,7 @@ export function EmblaCarousel({ embla }) {
     >
       <div className="embla__container max-lg:px-2 pe-2 gap-y-4 *:bg-neutral-50 dark:*:bg-neutral-900 grid auto-cols-fr h-full auto-rows-[100%] *:p-4 *:lg:p-10">
         {/* Start page */}
-        <div className="embla__slide border border-current rounded-2xl lg:rounded-xl gap-4 grid auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content] text-center">
+        <EmblaSlide className="text-center">
           <h1 className="variant-h1 mt-12">Purpose Foundry</h1>
           <h4 className="variant-h4 font-semibold">
             Generate vision statement for your business using Gemini Ai
@@ -73,14 +89,11 @@ export function EmblaCarousel({ embla }) {
               Get Started
             </Button>
           </div>
-        </div>
+        </EmblaSlide>
 
         {/* Questions */}
         {questions?.map((question, i) => (
-          <label
-            key={i}
-            className="embla__slide border border-current rounded-2xl lg:rounded-xl grid gap-4 auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content]"
-          >
+          <EmblaSlide key={i}>
             <h2 className="leading-none variant-h2 rounded-full mt-4 lg:mt-8 min-w-12 min-h-12 lg:min-w-16 lg:min-h-16 grid place-items-center justify-self-start border-4 border-current">
               {i + 1}
             </h2>
@@ -112,11 +125,11 @@ export function EmblaCarousel({ embla }) {
                 {promptData[i][1] ? "Next" : "Skip"}
               </Button>
             </div>
-          </label>
+          </EmblaSlide>
         ))}
 
         {/* Config Page */}
-        <div className="embla__slide border border-current rounded-2xl lg:rounded-xl gap-4 grid auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content]">
+        <EmblaSlide>
           <h2 className="leading-none variant-h2 rounded-full mt-4 lg:mt-8 min-w-12 min-h-12 lg:min-w-16 lg:min-h-16 grid place-items-center justify-self-start border-4 border-current">
             <IconAdjustmentsHorizontal size={56} />
           </h2>
@@ -175,7 +188,7 @@ export function EmblaCarousel({ embla }) {
               Previous
             </Button>
             <Button
-              onClick={onNextButtonClick}
+              onClick={getResponse}
               title="Generate"
             >
               <div className="flex gap-2 items-center">
@@ -184,10 +197,25 @@ export function EmblaCarousel({ embla }) {
               </div>
             </Button>
           </div>
-        </div>
+        </EmblaSlide>
+
+        {/* Generation Page */}
+        <EmblaSlide></EmblaSlide>
       </div>
     </div>
   )
 }
 
-// IconAdjustmentsHorizontal
+function EmblaSlide({ className, children, ...rest }) {
+  return (
+    <div
+      className={cn(
+        "embla__slide border border-current rounded-2xl lg:rounded-xl gap-4 grid auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content]",
+        className
+      )}
+      {...rest}
+    >
+      {children}
+    </div>
+  )
+}

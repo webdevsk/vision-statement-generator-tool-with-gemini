@@ -21,7 +21,7 @@ export function SidebarContainer({ embla }) {
         setOpen={setOpen}
       >
         <SidebarBody className="justify-between gap-10">
-          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+          <div className="flex flex-col flex-1 px-4 overflow-y-auto overflow-x-hidden">
             <Logo
               open={open}
               onClick={() => onButtonClick(0)}
@@ -83,10 +83,10 @@ export function SidebarContainer({ embla }) {
   )
 }
 
-export const Logo = (open, ...rest) => {
+export const Logo = ({ open, ...rest }) => {
   return (
     <button
-      className="font-normal flex space-x-2 items-center text-sm text-current py-1 relative z-20"
+      className="variant-small flex space-x-2 items-center text-current py-1 relative z-20"
       {...rest}
     >
       <div className="h-5 w-6 bg-current  rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
@@ -94,7 +94,7 @@ export const Logo = (open, ...rest) => {
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="variant-h6 font-bold whitespace-pre"
+          className="variant-h6 leading-none font-bold whitespace-pre"
         >
           Purpose Foundry
         </motion.span>
