@@ -52,17 +52,17 @@ export function EmblaCarousel({
 
   return (
     <div
-      className="embla overflow-hidden h-full py-2 md:rounded-2xl"
+      className="embla overflow-hidden h-full py-2 lg:rounded-2xl"
       ref={emblaRef}
     >
-      <div className="embla__container max-md:px-2 pe-4 gap-y-4 *:bg-neutral-50 dark:*:bg-neutral-900 grid auto-cols-fr h-full auto-rows-[100%] *:p-4 *:md:p-10">
+      <div className="embla__container max-lg:px-2 pe-2 gap-y-4 *:bg-neutral-50 dark:*:bg-neutral-900 grid auto-cols-fr h-full auto-rows-[100%] *:p-4 *:lg:p-10">
         {/* Start page */}
-        <div className="embla__slide border border-current rounded-2xl md:rounded-xl gap-4 grid auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content] text-center">
+        <div className="embla__slide border border-current rounded-2xl lg:rounded-xl gap-4 grid auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content] text-center">
           <h1 className="variant-h1 mt-12">Purpose Foundry</h1>
           <h4 className="variant-h4 font-semibold">
             Generate vision statement for your business using Gemini Ai
           </h4>
-          <h5 className="mt-24 variant-h5 max-w-xl md:mx-auto">
+          <h5 className="mt-24 variant-h5 max-w-xl lg:mx-auto">
             This App will ask you some basic questions regarding your business.
             Upon submission of your information we will use Gemini to generate a
             Vision Statement.
@@ -81,9 +81,9 @@ export function EmblaCarousel({
         {questions?.map((question, i) => (
           <label
             key={i}
-            className="embla__slide border border-current rounded-2xl md:rounded-xl grid gap-4 auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content]"
+            className="embla__slide border border-current rounded-2xl lg:rounded-xl grid gap-4 auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content]"
           >
-            <h2 className="leading-none variant-h2 rounded-full mt-4 md:mt-8 min-w-12 min-h-12 md:min-w-16 md:min-h-16 grid place-items-center justify-self-start border-4 border-current">
+            <h2 className="leading-none variant-h2 rounded-full mt-4 lg:mt-8 min-w-12 min-h-12 lg:min-w-16 lg:min-h-16 grid place-items-center justify-self-start border-4 border-current">
               {i + 1}
             </h2>
             <h3 className="variant-h3">{question}</h3>
@@ -120,12 +120,12 @@ export function EmblaCarousel({
         ))}
 
         {/* Config Page */}
-        <div className="embla__slide border border-current rounded-2xl md:rounded-xl gap-4 grid auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content]">
-          <h2 className="leading-none variant-h2 rounded-full mt-4 md:mt-8 min-w-12 min-h-12 md:min-w-16 md:min-h-16 grid place-items-center justify-self-start border-4 border-current">
+        <div className="embla__slide border border-current rounded-2xl lg:rounded-xl gap-4 grid auto-cols-fr grid-rows-[max-content_max-content_minmax(0,_1fr)_max-content]">
+          <h2 className="leading-none variant-h2 rounded-full mt-4 lg:mt-8 min-w-12 min-h-12 lg:min-w-16 lg:min-h-16 grid place-items-center justify-self-start border-4 border-current">
             <IconAdjustmentsHorizontal size={56} />
           </h2>
           <h3 className="variant-h3">Config</h3>
-          <div className="my-4 flex flex-col gap-x-3 gap-y-6 *:grid md:*:grid-cols-2 *:auto-rows-max *:gap-2">
+          <div className="my-4 flex flex-col gap-x-3 gap-y-6 *:grid lg:*:grid-cols-2 *:auto-rows-max *:gap-2">
             <div>
               <h5 className="variant-h5">Character Limit:</h5>
               <Slider

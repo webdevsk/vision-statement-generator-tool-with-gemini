@@ -60,7 +60,7 @@ export const DesktopSidebar = ({ className, children, ...props }) => {
     <>
       <motion.div
         className={cn(
-          "h-full px-4 py-4 hidden  md:flex md:flex-col bg-[--sidebar-color]  w-[300px] flex-shrink-0",
+          "h-full px-4 py-4 hidden  lg:flex lg:flex-col bg-[--sidebar-color]  w-[300px] flex-shrink-0",
           className
         )}
         animate={{
@@ -82,7 +82,7 @@ export const MobileSidebar = ({ className, children, ...props }) => {
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-[--sidebar-color] w-full"
+          "h-10 px-4 py-4 flex flex-row lg:hidden  items-center justify-between bg-[--sidebar-color] w-full"
         )}
         {...props}
       >
