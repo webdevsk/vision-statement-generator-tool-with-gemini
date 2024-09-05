@@ -41,22 +41,47 @@ export function EmblaCarousel({ embla }) {
     onNextButtonClick()
   }
 
+  // const getResponse = useCallback(async () => {
+  //   try {
+  //     if (!promptData[0][1] || !promptData[1][1])
+  //       throw new Error("First 2 questions are mendatory")
+  //     setLoading(true)
+  //     const { data, message } = await getGeminiResponse(
+  //       generatedPrompt(promptData, config)
+  //     )
+  //     if (!data) throw new Error(message)
+  //     setResponse(data)
+  //     onNextButtonClick()
+  //   } catch (error) {
+  //     console.error(error)
+  //     toast.error(error.message)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // })
+
   const getResponse = useCallback(async () => {
     try {
       if (!promptData[0][1] || !promptData[1][1])
         throw new Error("First 2 questions are mendatory")
       setLoading(true)
+      toast("Generating Vision Statement...", {
+        id: "gemini-promise",
+        duration: 3000
+      })
       const { data, message } = await getGeminiResponse(
         generatedPrompt(promptData, config)
       )
       if (!data) throw new Error(message)
       setResponse(data)
+      toast.success("Vision Statement generated successfully")
       onNextButtonClick()
     } catch (error) {
       console.error(error)
       toast.error(error.message)
     } finally {
       setLoading(false)
+      toast.dismiss("gemini-promise")
     }
   })
 
