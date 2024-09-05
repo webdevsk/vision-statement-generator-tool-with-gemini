@@ -41,25 +41,6 @@ export function EmblaCarousel({ embla }) {
     onNextButtonClick()
   }
 
-  // const getResponse = useCallback(async () => {
-  //   try {
-  //     if (!promptData[0][1] || !promptData[1][1])
-  //       throw new Error("First 2 questions are mendatory")
-  //     setLoading(true)
-  //     const { data, message } = await getGeminiResponse(
-  //       generatedPrompt(promptData, config)
-  //     )
-  //     if (!data) throw new Error(message)
-  //     setResponse(data)
-  //     onNextButtonClick()
-  //   } catch (error) {
-  //     console.error(error)
-  //     toast.error(error.message)
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // })
-
   const getResponse = useCallback(async () => {
     try {
       if (!promptData[0][1] || !promptData[1][1])
@@ -100,7 +81,9 @@ export function EmblaCarousel({ embla }) {
       emblaApi.slidesInView().length == 1 &&
         emblaApi
           .slideNodes()
-          [emblaApi.selectedScrollSnap()]?.querySelector("textarea")
+          [emblaApi.selectedScrollSnap()]?.querySelector(
+            "textarea:not([tabIndex='-1'])"
+          )
           ?.focus()
     }
     emblaApi.on("slidesInView", logSlidesInView)
@@ -132,7 +115,7 @@ export function EmblaCarousel({ embla }) {
               disabled={nextBtnDisabled}
               className="mx-auto"
             >
-              Load Previous Session
+              Load Previous
             </Button>
             <Button
               onClick={newSession}
@@ -202,7 +185,7 @@ export function EmblaCarousel({ embla }) {
               <Slider
                 min={500}
                 max={1000}
-                step={10}
+                step={50}
                 value={[config["Character Limit"]]}
                 onChange={value =>
                   setConfig(prevState => ({
@@ -231,6 +214,7 @@ export function EmblaCarousel({ embla }) {
               <textarea
                 rows={3}
                 maxLength={200}
+                tabIndex={-1}
                 value={config["Additional Instructions"]}
                 onChange={e =>
                   setConfig(prevState => ({
@@ -264,36 +248,39 @@ export function EmblaCarousel({ embla }) {
         </EmblaSlide>
 
         {/* Generation Page */}
-        {!!response && (
-          <EmblaSlide>
-            <div className="h-full overflow-y-auto row-span-full flex flex-col gap-4 justify-between">
-              <div
-                className="vision-statement"
-                dangerouslySetInnerHTML={{ __html: response }}
-              ></div>
+        <EmblaSlide>
+          <div className="h-full overflow-y-auto row-span-full flex flex-col gap-4 justify-between">
+            {!response && (
+              <h4 className="variant-h4 opacity-50 font-bold text-center mt-8">
+                Vision Statement will be generated here
+              </h4>
+            )}
+            <div
+              className="vision-statement"
+              dangerouslySetInnerHTML={{ __html: response }}
+            ></div>
 
-              <div className="flex gap-4 justify-between items-center">
-                <Button
-                  onClick={onPrevButtonClick}
-                  disabled={prevBtnDisabled}
-                  title="Previous"
-                >
-                  Previous
-                </Button>
-                <Button
-                  onClick={getResponse}
-                  disabled={loading}
-                  title="Regenerate"
-                >
-                  <div className="flex gap-2 items-center">
-                    <IconSparkles />
-                    <span>Regenerate</span>
-                  </div>
-                </Button>
-              </div>
+            <div className="flex gap-4 justify-between items-center">
+              <Button
+                onClick={onPrevButtonClick}
+                disabled={prevBtnDisabled}
+                title="Previous"
+              >
+                Previous
+              </Button>
+              <Button
+                onClick={getResponse}
+                disabled={loading}
+                title="Regenerate"
+              >
+                <div className="flex gap-2 items-center">
+                  <IconSparkles />
+                  <span>Regenerate</span>
+                </div>
+              </Button>
             </div>
-          </EmblaSlide>
-        )}
+          </div>
+        </EmblaSlide>
       </div>
     </div>
   )
