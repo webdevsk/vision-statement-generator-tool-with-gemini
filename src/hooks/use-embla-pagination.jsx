@@ -4,7 +4,7 @@ export const useEmblaPagination = emblaApi => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [scrollSnaps, setScrollSnaps] = useState([])
 
-  const onDotButtonClick = useCallback(
+  const onButtonClick = useCallback(
     index => {
       if (!emblaApi) return
       emblaApi.scrollTo(index)
@@ -31,6 +31,6 @@ export const useEmblaPagination = emblaApi => {
   return {
     selectedIndex,
     scrollSnaps,
-    onDotButtonClick
+    onButtonClick
   }
 }

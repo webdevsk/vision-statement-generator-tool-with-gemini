@@ -82,13 +82,13 @@ export const MobileSidebar = ({ className, children, ...props }) => {
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row lg:hidden  items-center justify-between bg-[--sidebar-color] w-full"
+          "h-10 px-4 py-4 flex flex-row lg:hidden items-center justify-between bg-[--sidebar-color] w-full"
         )}
         {...props}
       >
-        <div className="flex justify-end z-20 w-full">
+        <div className="flex justify-end z-20  w-full">
           <IconMenu2
-            className="text-neutral-800 dark:text-neutral-200"
+            className="text-neutral-800  dark:text-neutral-200"
             onClick={() => setOpen(!open)}
           />
         </div>
@@ -108,7 +108,7 @@ export const MobileSidebar = ({ className, children, ...props }) => {
               )}
             >
               <div
-                className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
+                className="absolute right-10  top-10 z-50 text-neutral-800 dark:text-neutral-200"
                 onClick={() => setOpen(!open)}
               >
                 <IconX />
@@ -144,5 +144,29 @@ export const SidebarLink = ({ link, className, ...props }) => {
         {link.label}
       </motion.span>
     </Link>
+  )
+}
+
+export const SidebarButton = ({ icon, label, className, ...props }) => {
+  const { open, animate } = useSidebar()
+  return (
+    <button
+      className={cn(
+        "flex items-center justify-start gap-2  group/sidebar py-2",
+        className
+      )}
+      {...props}
+    >
+      {icon}
+      <motion.span
+        animate={{
+          display: animate ? (open ? "inline-block" : "none") : "inline-block",
+          opacity: animate ? (open ? 1 : 0) : 1
+        }}
+        className="variant-p font-normal group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+      >
+        {label}
+      </motion.span>
+    </button>
   )
 }

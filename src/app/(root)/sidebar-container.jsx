@@ -1,10 +1,18 @@
 "use client"
-import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar"
+import { Sidebar, SidebarBody, SidebarButton } from "@/components/ui/sidebar"
+import { questions } from "@/data/questions"
+import { useEmblaPagination } from "@/hooks/use-embla-pagination"
+import { cn } from "@/lib/utils"
+import { IconAdjustmentsHorizontal, IconSparkles } from "@tabler/icons-react"
 import { motion } from "framer-motion"
 import { useState } from "react"
 
-export function SidebarContainer() {
+export function SidebarContainer({ embla }) {
   const [open, setOpen] = useState(false)
+
+  const [_, emblaApi] = embla
+  const { selectedIndex, scrollSnaps, onButtonClick } =
+    useEmblaPagination(emblaApi)
 
   return (
     <>
@@ -14,11 +22,58 @@ export function SidebarContainer() {
       >
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            <Logo open={open} />
-            <div className="mt-8 flex flex-col gap-2">
-              {/* {links.map((link, idx) => (
-                                <SidebarLink key={idx} link={link} />
-                            ))} */}
+            <Logo
+              open={open}
+              onClick={() => onButtonClick(0)}
+            />
+            <div className="mt-8 flex flex-col">
+              {questions.map((question, i) => (
+                <SidebarButton
+                  key={i}
+                  label={question}
+                  onClick={() => onButtonClick(i + 1)}
+                  icon={
+                    <div
+                      className={cn(
+                        "border-2 border-current rounded-full grid place-items-center variant-small min-w-6 aspect-square",
+                        selectedIndex === i + 1 && "bg-current *:invert"
+                      )}
+                    >
+                      <span>{i + 1}</span>
+                    </div>
+                  }
+                />
+              ))}
+              <SidebarButton
+                label="Config"
+                active={selectedIndex === 11}
+                onClick={() => onButtonClick(11)}
+                icon={
+                  <div
+                    className={cn(
+                      "border-2 border-current rounded-full grid place-items-center variant-small min-w-6 aspect-square",
+                      selectedIndex === 11 && "bg-current *:invert"
+                    )}
+                  >
+                    <IconAdjustmentsHorizontal size={16} />
+                  </div>
+                }
+              />
+              <SidebarButton
+                label="Result"
+                active={selectedIndex === 12}
+                onClick={() => onButtonClick(12)}
+                icon={
+                  <div
+                    className={cn(
+                      "border-2 border-current rounded-full grid place-items-center variant-small min-w-6 aspect-square",
+                      selectedIndex === 12 && "bg-current *:invert"
+                    )}
+                  >
+                    <IconSparkles size={16} />
+                  </div>
+                }
+              />
             </div>
           </div>
           <div>{/* Theme toggler */}</div>
@@ -28,10 +83,13 @@ export function SidebarContainer() {
   )
 }
 
-export const Logo = open => {
+export const Logo = (open, ...rest) => {
   return (
-    <div className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+    <button
+      className="font-normal flex space-x-2 items-center text-sm text-current py-1 relative z-20"
+      {...rest}
+    >
+      <div className="h-5 w-6 bg-current  rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
       {open && (
         <motion.span
           initial={{ opacity: 0 }}
@@ -41,16 +99,6 @@ export const Logo = open => {
           Purpose Foundry
         </motion.span>
       )}
-    </div>
+    </button>
   )
 }
-
-// const links = [
-//     {
-//         label: "Dashboard",
-//         href: "#",
-//         icon: (
-//             <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-//         ),
-//     },
-// ]

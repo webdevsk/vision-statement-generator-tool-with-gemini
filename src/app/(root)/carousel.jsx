@@ -3,16 +3,15 @@ import { Slider } from "@/components/ui/slider"
 import { questions } from "@/data/questions"
 import { useEmblaPrevNextButtons } from "@/hooks/use-embla-prev-next-button"
 import { IconAdjustmentsHorizontal, IconSparkles } from "@tabler/icons-react"
-import useEmblaCarousel from "embla-carousel-react"
 import { useEffect, useState } from "react"
 
-export function EmblaCarousel({ options = { axis: "y", watchDrag: false } }) {
+export function EmblaCarousel({ embla }) {
+  const [emblaRef, emblaApi] = embla
   // Creating a tuple with questions and answers
   const [promptData, setPromptData] = useState(questions.map(q => [q, ""]))
   const [config, setConfig] = useState({})
 
   // init embla
-  const [emblaRef, emblaApi] = useEmblaCarousel(options)
   const {
     prevBtnDisabled,
     nextBtnDisabled,
