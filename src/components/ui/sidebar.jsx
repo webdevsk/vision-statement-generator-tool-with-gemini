@@ -64,7 +64,7 @@ export const DesktopSidebar = ({ className, children, ...props }) => {
           className
         )}
         animate={{
-          width: animate ? (open ? "304px" : "64px") : "304px"
+          width: animate ? (open ? "300px" : "60px") : "300px"
         }}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}

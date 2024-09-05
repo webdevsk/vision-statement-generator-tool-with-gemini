@@ -9,7 +9,7 @@
     "plugin:react-hooks/recommended"
   ],
   "rules": {
-    "no-undef": "warn"
+    "no-undef": "error"
   }
 }
 

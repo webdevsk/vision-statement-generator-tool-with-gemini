@@ -7,7 +7,7 @@ import { MainContainer } from "./main-container"
 import useEmblaCarousel from "embla-carousel-react"
 
 export default function ClientApp() {
-    const embla = useEmblaCarousel({ axis: "y", watchDrag: false })
+    const embla = useEmblaCarousel({ axis: "y", watchDrag: false, watchFocus: false })
 
     return (
         <div

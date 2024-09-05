@@ -5,27 +5,43 @@ import { questions } from "@/data/questions"
 import { useEmblaPrevNextButtons } from "@/hooks/use-embla-prev-next-button"
 import { cn } from "@/lib/utils"
 import { IconAdjustmentsHorizontal, IconSparkles } from "@tabler/icons-react"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { getGeminiResponse } from "@/actions/get-gemini-response"
-import useSWRImmutable from "swr"
 import { generatedPrompt } from "@/lib/generated-prompts"
+import { toast } from "sonner"
 
 export function EmblaCarousel({ embla }) {
   const [emblaRef, emblaApi] = embla
   // Creating a tuple with questions and answers
   const [promptData, setPromptData] = useState(questions.map(q => [q, ""]))
-  const [config, setConfig] = useState({})
+  const [config, setConfig] = useState({
+    "Character Limit": 1000,
+    "Line Limit": 50
+  })
 
-  const [responseData, setResponseData] = useState({ data: {} })
-  console.log(generatedPrompt(promptData, config))
-  async function getResponse() {
-    const res = await getGeminiResponse(generatedPrompt(promptData, config))
-    console.log(res)
-  }
-  // const { data, error, isLoading } = useSWRImmutable(
-  //   generatedPrompt(promptData, config),
-  //   prompt => getGeminiResponse
-  // )
+  const [response, setResponse] = useState("")
+  const [loading, setLoading] = useState(false)
+  console.log(loading)
+  console.log(response)
+
+  const getResponse = useCallback(async () => {
+    try {
+      if (!promptData[0][1] || !promptData[1][1])
+        throw new Error("First 2 questions are mendatory")
+      setLoading(true)
+      const { data, message } = await getGeminiResponse(
+        generatedPrompt(promptData, config)
+      )
+      if (!data) throw new Error(message)
+      setResponse(data)
+      onNextButtonClick()
+    } catch (error) {
+      console.error(error)
+      toast.error(error.message)
+    } finally {
+      setLoading(false)
+    }
+  })
 
   // init embla
   const {
@@ -42,13 +58,16 @@ export function EmblaCarousel({ embla }) {
     )
   }
 
-  // Auto focus input element in current slide for seamless operations
   useEffect(() => {
     if (!emblaApi) return
     function logSlidesInView(emblaApi) {
-      const inView = emblaApi.slidesInView()
-      inView.length === 1 &&
-        emblaApi.slideNodes()[inView[0]]?.querySelector("textarea")?.focus()
+      // Auto focus input element in current slide for seamless operations
+      // scrolling has finished. Depends on "inViewThreshold"
+      emblaApi.slidesInView().length == 1 &&
+        emblaApi
+          .slideNodes()
+          [emblaApi.selectedScrollSnap()]?.querySelector("textarea")
+          ?.focus()
     }
     emblaApi.on("slidesInView", logSlidesInView)
     return () => {
@@ -138,9 +157,10 @@ export function EmblaCarousel({ embla }) {
             <div>
               <h5 className="variant-h5">Character Limit:</h5>
               <Slider
-                min={50}
-                max={200}
-                value={[config["Character Limit"] ?? 50]}
+                min={500}
+                max={1000}
+                step={10}
+                value={[config["Character Limit"]]}
                 onChange={value =>
                   setConfig(prevState => ({
                     ...prevState,
@@ -154,7 +174,7 @@ export function EmblaCarousel({ embla }) {
               <Slider
                 min={1}
                 max={50}
-                value={[config["Line Limit"] ?? 50]}
+                value={[config["Line Limit"]]}
                 onChange={value =>
                   setConfig(prevState => ({
                     ...prevState,
@@ -189,6 +209,7 @@ export function EmblaCarousel({ embla }) {
             </Button>
             <Button
               onClick={getResponse}
+              disabled={loading}
               title="Generate"
             >
               <div className="flex gap-2 items-center">
@@ -200,7 +221,36 @@ export function EmblaCarousel({ embla }) {
         </EmblaSlide>
 
         {/* Generation Page */}
-        <EmblaSlide></EmblaSlide>
+        {!!response && (
+          <EmblaSlide>
+            <div className="h-full overflow-y-auto row-span-full flex flex-col gap-4 justify-between">
+              <div
+                className="vision-statement"
+                dangerouslySetInnerHTML={{ __html: response }}
+              ></div>
+
+              <div className="flex gap-4 justify-between items-center">
+                <Button
+                  onClick={onPrevButtonClick}
+                  disabled={prevBtnDisabled}
+                  title="Previous"
+                >
+                  Previous
+                </Button>
+                <Button
+                  onClick={getResponse}
+                  disabled={loading}
+                  title="Regenerate"
+                >
+                  <div className="flex gap-2 items-center">
+                    <IconSparkles />
+                    <span>Regenerate</span>
+                  </div>
+                </Button>
+              </div>
+            </div>
+          </EmblaSlide>
+        )}
       </div>
     </div>
   )

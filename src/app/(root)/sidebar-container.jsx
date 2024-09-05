@@ -46,7 +46,6 @@ export function SidebarContainer({ embla }) {
               ))}
               <SidebarButton
                 label="Config"
-                active={selectedIndex === 11}
                 onClick={() => onButtonClick(11)}
                 icon={
                   <div
@@ -61,7 +60,6 @@ export function SidebarContainer({ embla }) {
               />
               <SidebarButton
                 label="Result"
-                active={selectedIndex === 12}
                 onClick={() => onButtonClick(12)}
                 icon={
                   <div
